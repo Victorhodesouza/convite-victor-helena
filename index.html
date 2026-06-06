@@ -103,6 +103,205 @@
   </style>
 </head>
 <body>
+<div id="env-screen">
+  <style>
+    #env-screen{
+      position:fixed;inset:0;z-index:9999;
+      background:#122040;
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;perspective:1400px;overflow:hidden;
+      transition:opacity .9s ease;
+    }
+    #env-screen::before{
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(ellipse 70% 70% at 50% 50%, transparent 40%, rgba(0,0,0,.45) 100%);
+      pointer-events:none;z-index:0;
+    }
+    #env-screen.env-done{opacity:0;pointer-events:none}
+    #env-screen.env-done #env-flap{transform:rotateX(-188deg)}
+    #env-screen.env-done #env-wrap{transform:translateY(-8px) scale(1.03)}
+    #env-wrap{
+      position:relative;
+      width:min(400px,82vw);
+      height:min(534px,calc(82vw * 1.335));
+      transition:transform .5s ease;
+      z-index:1;
+    }
+    #env-wrap:hover{transform:translateY(-6px)}
+    #env-body{
+      position:absolute;inset:0;
+      background:#1b3268;
+      box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(80,120,200,.12),inset 0 0 60px rgba(0,0,20,.3);
+    }
+    #env-left{position:absolute;top:0;left:0;bottom:0;width:52%;z-index:2}
+    #env-left::before{content:'';position:absolute;inset:0;background:#172d5e;clip-path:polygon(0 0,0 100%,100% 50%)}
+    #env-right{position:absolute;top:0;right:0;bottom:0;width:52%;z-index:2}
+    #env-right::before{content:'';position:absolute;inset:0;background:#172d5e;clip-path:polygon(100% 0,100% 100%,0 50%)}
+    #env-bottom{position:absolute;bottom:0;left:0;right:0;height:58%;z-index:3}
+    #env-bottom::before{content:'';position:absolute;inset:0;background:#162b5a;clip-path:polygon(0 100%,100% 100%,50% 0)}
+    #env-flap{
+      position:absolute;top:0;left:-1px;right:-1px;height:54%;
+      transform-origin:top center;
+      transition:transform 1.1s cubic-bezier(.4,0,.2,1);
+      z-index:6;
+    }
+    #env-flap::before{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(175deg,#1e3878 0%,#1b3470 60%,#172d60 100%);
+      clip-path:polygon(0 0,100% 0,50% 100%);
+    }
+    .leaf-tl{position:absolute;top:3%;left:3%;width:36%;pointer-events:none;z-index:5}
+    .leaf-br{position:absolute;bottom:3%;right:3%;width:36%;pointer-events:none;z-index:5;transform:rotate(180deg)}
+    .leaf-tr{position:absolute;top:4%;right:4%;width:20%;pointer-events:none;z-index:5}
+    .leaf-bl{position:absolute;bottom:4%;left:4%;width:20%;pointer-events:none;z-index:5;transform:rotate(180deg)}
+    #env-seal{
+      position:absolute;top:50%;left:50%;
+      transform:translate(-50%,-50%);
+      z-index:7;
+      width:min(138px,30vw);height:min(138px,30vw);
+      filter:drop-shadow(0 6px 18px rgba(0,0,0,.5));
+      transition:transform .3s ease,filter .3s ease;
+    }
+    #env-clique{
+      position:absolute;bottom:11%;left:0;right:0;
+      text-align:center;z-index:7;
+      color:#c9a84c;
+      font-family:Garamond,Georgia,serif;
+      letter-spacing:.45em;
+      font-size:clamp(10px,2.8vw,14px);
+      text-transform:lowercase;
+    }
+    .env-orn{display:block;color:rgba(201,168,76,.55);font-size:.65em;letter-spacing:.2em;margin:5px 0}
+  </style>
+
+  <!-- Leaf top-left -->
+  <svg class="leaf-tl" viewBox="0 0 180 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#2d5090" stroke-width="1.3">
+      <path d="M90 240 Q85 180 60 130 Q40 90 20 40"/>
+      <path d="M90 240 Q95 180 120 130 Q140 90 160 40"/>
+      <path d="M60 130 Q38 118 32 98 Q50 104 60 130Z"/>
+      <path d="M48 106 Q26 94 22 74 Q40 80 48 106Z"/>
+      <path d="M38 80 Q18 68 16 48 Q32 56 38 80Z"/>
+      <path d="M70 154 Q46 144 42 122 Q62 128 70 154Z"/>
+      <path d="M120 130 Q142 118 148 98 Q130 104 120 130Z"/>
+      <path d="M132 106 Q154 94 158 74 Q140 80 132 106Z"/>
+      <path d="M142 80 Q162 68 164 48 Q148 56 142 80Z"/>
+      <path d="M110 154 Q134 144 138 122 Q118 128 110 154Z"/>
+    </g>
+  </svg>
+
+  <!-- Leaf bottom-right -->
+  <svg class="leaf-br" viewBox="0 0 180 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#2d5090" stroke-width="1.3">
+      <path d="M90 240 Q85 180 60 130 Q40 90 20 40"/>
+      <path d="M90 240 Q95 180 120 130 Q140 90 160 40"/>
+      <path d="M60 130 Q38 118 32 98 Q50 104 60 130Z"/>
+      <path d="M48 106 Q26 94 22 74 Q40 80 48 106Z"/>
+      <path d="M38 80 Q18 68 16 48 Q32 56 38 80Z"/>
+      <path d="M70 154 Q46 144 42 122 Q62 128 70 154Z"/>
+      <path d="M120 130 Q142 118 148 98 Q130 104 120 130Z"/>
+      <path d="M132 106 Q154 94 158 74 Q140 80 132 106Z"/>
+      <path d="M142 80 Q162 68 164 48 Q148 56 142 80Z"/>
+      <path d="M110 154 Q134 144 138 122 Q118 128 110 154Z"/>
+    </g>
+  </svg>
+
+  <!-- Leaf top-right (smaller) -->
+  <svg class="leaf-tr" viewBox="0 0 100 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#2d5090" stroke-width="1.2">
+      <path d="M50 160 Q48 120 30 80 Q18 50 10 20"/>
+      <path d="M30 80 Q14 70 10 52 Q26 58 30 80Z"/>
+      <path d="M20 56 Q6 46 4 28 Q18 34 20 56Z"/>
+      <path d="M38 108 Q22 98 18 78 Q34 86 38 108Z"/>
+    </g>
+  </svg>
+
+  <!-- Leaf bottom-left (smaller) -->
+  <svg class="leaf-bl" viewBox="0 0 100 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#2d5090" stroke-width="1.2">
+      <path d="M50 160 Q48 120 30 80 Q18 50 10 20"/>
+      <path d="M30 80 Q14 70 10 52 Q26 58 30 80Z"/>
+      <path d="M20 56 Q6 46 4 28 Q18 34 20 56Z"/>
+      <path d="M38 108 Q22 98 18 78 Q34 86 38 108Z"/>
+    </g>
+  </svg>
+
+  <div id="env-wrap">
+    <div id="env-body">
+      <div id="env-flap"></div>
+      <div id="env-bottom"></div>
+      <div id="env-left"></div>
+      <div id="env-right"></div>
+    </div>
+
+    <!-- WAX SEAL -->
+    <svg id="env-seal" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="waxGold" cx="36%" cy="30%" r="70%">
+          <stop offset="0%"   stop-color="#f0d060"/>
+          <stop offset="25%"  stop-color="#d4a820"/>
+          <stop offset="55%"  stop-color="#b58a08"/>
+          <stop offset="80%"  stop-color="#9a7005"/>
+          <stop offset="100%" stop-color="#7a5402"/>
+        </radialGradient>
+        <radialGradient id="waxShine" cx="30%" cy="25%" r="55%">
+          <stop offset="0%"  stop-color="rgba(255,255,200,.22)"/>
+          <stop offset="60%" stop-color="rgba(255,200,50,.04)"/>
+          <stop offset="100%" stop-color="rgba(0,0,0,.18)"/>
+        </radialGradient>
+        <filter id="waxTex" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="4" result="noise"/>
+          <feColorMatrix in="noise" type="saturate" values="0" result="gn"/>
+          <feBlend in="SourceGraphic" in2="gn" mode="overlay" result="bl"/>
+          <feComposite in="bl" in2="SourceGraphic" operator="in"/>
+        </filter>
+      </defs>
+      <ellipse cx="70" cy="71" rx="63" ry="61" fill="url(#waxGold)" filter="url(#waxTex)"/>
+      <ellipse cx="70" cy="71" rx="63" ry="61" fill="url(#waxShine)"/>
+      <ellipse cx="70" cy="71" rx="57" ry="55" fill="none" stroke="rgba(80,50,0,.35)" stroke-width="1.8"/>
+      <!-- Decorative leaf branch -->
+      <g transform="translate(24,76) rotate(-38)" stroke="rgba(80,50,0,.65)" stroke-width="1" fill="none">
+        <line x1="0" y1="0" x2="0" y2="-18"/>
+        <ellipse cx="-3" cy="-8" rx="4" ry="2.5" transform="rotate(-35 -3 -8)" fill="rgba(80,50,0,.5)" stroke="none"/>
+        <ellipse cx="3" cy="-13" rx="4" ry="2.5" transform="rotate(20 3 -13)" fill="rgba(80,50,0,.5)" stroke="none"/>
+        <ellipse cx="0" cy="-18" rx="3.5" ry="2" fill="rgba(80,50,0,.5)" stroke="none"/>
+      </g>
+      <!-- V monogram -->
+      <text x="34" y="91" font-size="54" font-family="Palatino Linotype,Palatino,Georgia,serif" font-style="italic" fill="rgba(70,45,0,.8)">V</text>
+      <!-- H monogram -->
+      <text x="74" y="89" font-size="46" font-family="Palatino Linotype,Palatino,Georgia,serif" font-weight="600" fill="rgba(70,45,0,.75)">H</text>
+    </svg>
+
+    <!-- CLIQUE AQUI -->
+    <div id="env-clique">
+      <span class="env-orn">&#x2015;&#x2015;&#x2015; &#x2736; &#x2015;&#x2015;&#x2015;</span>
+      clique aqui
+      <span class="env-orn">&#x2015;&#x2015;&#x2015; &#x2736; &#x2015;&#x2015;&#x2015;</span>
+    </div>
+  </div>
+
+</div>
+<script>
+(function(){
+  var sc=document.getElementById('env-screen');
+  var opened=false;
+  if(!sc)return;
+  sc.addEventListener('click',function(){
+    if(opened)return;
+    opened=true;
+    var seal=document.getElementById('env-seal');
+    if(seal){
+      seal.style.transition='transform .15s ease';
+      seal.style.transform='translate(-50%,-50%) scale(1.1)';
+    }
+    setTimeout(function(){
+      if(seal)seal.style.transform='translate(-50%,-50%) scale(1)';
+      sc.classList.add('env-done');
+    },180);
+    setTimeout(function(){sc.remove();},1900);
+  });
+})();
+</script>
   <div id="root"></div>
   <!-- Aplicação do convite (não altere) -->
   <script type="module">var ch=e=>{throw TypeError(e)};var Fx=(e,t)=>()=>(t||e((t={exports:{}}).exports,t),t.exports);var ic=(e,t,r)=>t.has(e)||ch("Cannot "+r);var A=(e,t,r)=>(ic(e,t,"read from private field"),r?r.call(e):t.get(e)),he=(e,t,r)=>t.has(e)?ch("Cannot add the same private member more than once"):t instanceof WeakSet?t.add(e):t.set(e,r),ae=(e,t,r,n)=>(ic(e,t,"write to private field"),n?n.call(e,r):t.set(e,r),r),Ye=(e,t,r)=>(ic(e,t,"access private method"),r);var zi=(e,t,r,n)=>({set _(s){ae(e,t,s,r)},get _(){return A(e,t,n)}});var WO=Fx((ZO,Mi)=>{function Ux(e,t){for(var r=0;r<t.length;r++){const n=t[r];if(typeof n!="string"&&!Array.isArray(n)){for(const s in n)if(s!=="default"&&!(s in e)){const o=Object.getOwnPropertyDescriptor(n,s);o&&Object.defineProperty(e,s,o.get?o:{enumerable:!0,get:()=>n[s]})}}}return Object.freeze(Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}))}(function(){const t=document.createElement("link").relList;if(t&&t.supports&&t.supports("modulepreload"))return;for(const s of document.querySelectorAll('link[rel="modulepreload"]'))n(s);new MutationObserver(s=>{for(const o of s)if(o.type==="childList")for(const i of o.addedNodes)i.tagName==="LINK"&&i.rel==="modulepreload"&&n(i)}).observe(document,{childList:!0,subtree:!0});function r(s){const o={};return s.integrity&&(o.integrity=s.integrity),s.referrerPolicy&&(o.referrerPolicy=s.referrerPolicy),s.crossOrigin==="use-credentials"?o.credentials="include":s.crossOrigin==="anonymous"?o.credentials="omit":o.credentials="same-origin",o}function n(s){if(s.ep)return;s.ep=!0;const o=r(s);fetch(s.href,o)}})();function Hm(e){return e&&e.__esModule&&Object.prototype.hasOwnProperty.call(e,"default")?e.default:e}var qm={exports:{}},yl={},Km={exports:{}},ue={};/**
